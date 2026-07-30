@@ -52,6 +52,16 @@ class ACMOJClient:
                 print(f"Unsupported HTTP method: {method}")
                 return None
 
+    def submit_code(self, problem_id: int, language: str, code: str) -> dict | None:
+        """
+        Submit plain source code text to ACMOJ.
+        """
+        data = {"language": language, "code": code}
+        result = self._make_request("POST", f"/problem/{problem_id}/submit", data=data)
+        if result and 'id' in result:
+            self._save_submission_id(result['id'])
+        return result
+
             if response.status_code == 204:
                 return {"status": "success", "message": "Operation successful"}
 
